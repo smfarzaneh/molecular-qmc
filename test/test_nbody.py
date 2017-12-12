@@ -18,8 +18,9 @@ class TestNbody(unittest.TestCase):
 		self.assertItemsEqual(self._molecule.rx, np.array([4.0, 8.0]))
 
 	def test_potential(self):
-		self.assertAlmostEqual(self._molecule.nucleiPotential(), -41.0/24.0)
-		self.assertAlmostEqual(self._molecule.electronsPotential(), 1.0/4.0)
+		self.assertAlmostEqual(self._molecule.potentialElectronNucleus(), -41.0/24.0)
+		self.assertAlmostEqual(self._molecule.potentialElectronElectron(), 1.0/4.0)
+		self.assertAlmostEqual(self._molecule.potentialNucleusNucleus(), 1.0/10.0)
 
 if __name__ == '__main__':
     unittest.main()
