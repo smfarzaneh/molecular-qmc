@@ -86,6 +86,20 @@ class Nbody(object):
 
 		return distance
 
+	def chargeNucleusNucleus(self):
+
+		# calculate all nucleus-nucleus charge factors 
+		# return them as a matrix with K rows and K columns
+
+		# tile positions into matrices to avoid nested loops
+		Z_col = np.tile(self.Z, (self.K, 1))
+		Z_row = np.tile(self.Z, (self.K, 1)).transpose()
+
+		# calculate charge factors
+		ZZ = np.multiply(Z_row, Z_col)
+
+		return ZZ
+
 	def potentialElectronNucleus(self):
 
 		D = self.distanceElectronNucleus()
@@ -110,7 +124,8 @@ class Nbody(object):
 		D = self.distanceNucleusNucleus()
 		I = np.identity(self.K)
 		RD = np.reciprocal(D + I) - I
-		potential = np.sum(RD)/2.0 		
+		ZZ = self.chargeNucleusNucleus()
+		potential = np.sum(np.multiply(ZZ, RD))/2.0 		
 		# divide by 2 is for counting nucleus-nucleus distances twice
 
 		return potential

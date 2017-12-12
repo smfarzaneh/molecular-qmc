@@ -20,7 +20,7 @@ class TestNbody(unittest.TestCase):
 	def test_potential(self):
 		self.assertAlmostEqual(self._molecule.potentialElectronNucleus(), -41.0/24.0)
 		self.assertAlmostEqual(self._molecule.potentialElectronElectron(), 1.0/4.0)
-		self.assertAlmostEqual(self._molecule.potentialNucleusNucleus(), 1.0/10.0)
+		self.assertAlmostEqual(self._molecule.potentialNucleusNucleus(), 2.0/10.0)
 
 if __name__ == '__main__':
     unittest.main()
