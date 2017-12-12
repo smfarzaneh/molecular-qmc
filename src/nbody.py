@@ -1,4 +1,3 @@
-from trialWavefunction import *
 import numpy as np
 
 class Nbody(object):
@@ -135,34 +134,3 @@ class Nbody(object):
 		return self.potentialElectronNucleus() \
 			+ self.potentialElectronElectron() \
 			+ self.potentialNucleusNucleus()
-
-	def kinetic(self):
-
-		h = 0.001
-		r = np.array([[self.rx], [self.ry], [self.rz]])
-		r_forward = r + h
-		r_backward = r - h
-		wavefunction_r = TrialWavefunction.evaluate(r)
-		wavefunction_r_forward = TrialWavefunction.evaluate(self.r_forward)
-		wavefunction_r_backward = TrialWavefunction.evaluate(self.r_backward)
-		secondDerivative = (wavefunction_r_forward + wavefunction_r_backward - 2.0*wavefunction_r)/h**2
-		laplacian = np.sum(secondDerivative)
-		kinetic = -0.5*laplacian/wavefunction_r
-
-		return kinetic
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
