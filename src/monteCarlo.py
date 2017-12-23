@@ -7,6 +7,7 @@ class MonteCarlo(object):
 		self.molecule = molecule
 		self.stepSize = stepSize
 		self.numAccepted = 0
+		self.accepted = True
 
 	def sample(self, alpha):
 
@@ -31,11 +32,17 @@ class MonteCarlo(object):
 		s = np.random.rand()
 		ratio = nextProbability/currentProbability
 		if ratio >= 1:
-			accepted = True
+			self.accepted = True
 			self.numAccepted += 1
 		elif ratio > s:
 			self.numAccepted += 1
-			accepted = True
+			self.accepted = True
 		else:
 			self.molecule.nbody.setElectronPositions(r)
-			accepted = False 
+			self.accepted = False 
+
+	def reset(self):
+
+		self.molecule.initializeElectronPositions()
+		self.numAccepted = 0
+		self.accepted = True
