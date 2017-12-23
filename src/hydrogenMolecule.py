@@ -3,13 +3,12 @@ from nbody import *
 
 class HydrogenMolecule():
 
-	def __init__(self, initialNucleiDistance):
+	def __init__(self, nucleiDistance):
 
-		self.nucleiDistance = initialNucleiDistance
+		self.nucleiDistance = nucleiDistance
 		self.nbody = None
 		self.defineNbody()
 		self.initializeElectronPositions()
-		# self.wavefunction = self.trialWavefunction(0.1)
 
 	def defineNbody(self):
 
@@ -18,24 +17,26 @@ class HydrogenMolecule():
 		numElectrons = 2
 		nucleiCharges = np.array([1, 1])
 		nucleiPositions = np.array([[-d/2.0, 0.0, 0.0], [d/2.0, 0, 0]]).transpose()
-		electronPositions = np.zeros((3, 2))
+		electronPositions = np.zeros((3, numElectrons))
 		nbody = Nbody(numNuclei, numElectrons, nucleiCharges, nucleiPositions, electronPositions)
 
 		self.nbody = nbody
 
 	def initializeElectronPositions(self):
 
-		d = self.nucleiDistance
 		N = self.nbody.N
-		electronPositions = np.random.rand(3, N)*2.0*d - d
+		electronPositions = np.random.rand(3, N)*5.0 - 2.5
 		self.nbody.setElectronPositions(electronPositions)
 
 	def trialWavefunction(self, alpha):
 		
 		r = self.nbody.distanceElectronNucleus()
-		singleElectronWavefunction = np.sum(np.exp(-alpha*r), axis = 1)
+		ree = self.nbody.distanceElectronElectron() + np.identity(self.nbody.N)
+		slater = np.sum(np.exp(-1.0*(alpha[0])*r), axis = 1)
+		jastrow = np.sqrt(np.prod(np.exp(ree/(2.0*(1.0 + alpha[1]*ree)))))
+		singleElectronWavefunction = slater*jastrow
 		totalWavefunction = np.prod(singleElectronWavefunction)
-
+		
 		return totalWavefunction
 
 	def kinetic(self, alpha):
